@@ -4,7 +4,7 @@ import sys
 def main():
     args = sys.argv[1:]
     # Load dataset from CSV file
-    file_path = args[1]
+    file_path = args[0]
 
     print("Loading dataset...")
     data = pd.read_csv(file_path)
