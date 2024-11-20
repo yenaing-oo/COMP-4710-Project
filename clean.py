@@ -23,8 +23,8 @@ def main():
                 writer.writerow({
                     "Reason": row["Reason"],
                     "Type": row["Type"],
-                    "Neighbourhood": row["Neighbourhood"],
-                    "Ward": row["Ward"]
+                    "Neighbourhood": row["Neighbourhood"] + "_N",
+                    "Ward": row["Ward"] + "_W"
                 })
             print(f"Processing row {i}/{row_count}")
 
