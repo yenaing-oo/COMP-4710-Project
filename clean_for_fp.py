@@ -4,7 +4,7 @@ import csv
 def main():
     args = sys.argv[1:]
     csv_file = args[0]
-    output_file = "./output/output.csv"
+    output_file = "./output/cleaned_311_dataset.csv"
 
     with open(csv_file, mode="r", newline="") as infile, open(
         output_file, mode="w", newline=""
