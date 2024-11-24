@@ -21,8 +21,8 @@ def main():
         for i, row in enumerate(reader, start=1):
             if row["Subject"] == "Service Request" and row["Neighbourhood"]:
                 writer.writerow({
-                    "Reason": row["Reason"],
-                    "Type": row["Type"],
+                    "Reason": row["Reason"] + "_R",
+                    "Type": row["Type"] + "_T",
                     "Neighbourhood": row["Neighbourhood"] + "_N",
                     "Ward": row["Ward"] + "_W"
                 })
