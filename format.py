@@ -20,16 +20,18 @@ def main():
     print("Formatting data...")
     # Write the mapping and transactions to a text file
     output_file = "./output/formatted_data.txt"
-    with open(output_file, "w") as f:
+    key_file = "./output/keys.txt"
+    with open(output_file, "w") as f1, open(key_file, "w") as f2:
         # Write item mappings
-        f.write("@CONVERTED_FROM_TEXT\n")
+        f2.write("@CONVERTED_FROM_TEXT\n")
         for item, idx in item_mapping.items():
-            f.write(f"@ITEM={idx}={item}\n")
+            line = f"@ITEM={idx}={item}\n"
+            f2.write(line)
         
         # Write transactions
         for _, row in data.iterrows():
             transaction = sorted(item_mapping[value] for value in row)
-            f.write(" ".join(map(str, transaction)) + "\n")
+            f1.write(" ".join(map(str, transaction)) + "\n")
 
     print(f"Formatted data saved to {output_file}")
 
