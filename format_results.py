@@ -1,6 +1,8 @@
 import sys
 import csv
 
+item_sort_order = {"_R": 0, "_T": 1, "_N": 2, "_W": 3}
+
 def parse_keys(keys_txt):
     keys = {}
     with open(keys_txt, 'r') as f:
@@ -26,7 +28,7 @@ def format_patterns(patterns, keys):
     formatted_patterns = []
     for items, support in patterns:
         item_names = [keys[item] for item in items]
-        item_names.sort()
+        item_names.sort(key=lambda name: item_sort_order[name[-2:]])
         formatted_patterns.append((item_names, support))
     
     formatted_patterns.sort(key=lambda x: (len(x[0]), -x[1]))
