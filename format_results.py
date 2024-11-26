@@ -8,11 +8,12 @@ corresponding name using a keys file, sorts the patterns based on their length a
 writes the formatted patterns to a CSV file.
 
 Usage:
-    python format_results.py <keys.txt> <frequent_patterns.txt> <output.csv>
+    python format_results.py <keys.txt> <results.txt> <output.csv>
 
 Where:
     <keys.txt> is the file containing the mapping of item numbers to their names.
-    <frequent_patterns.txt> is the file containing the frequent patterns extracted from the dataset.
+    <results.txt> is the file containing the frequent patterns extracted from the dataset by the
+    SPMF library.
     <output.csv> is the file where the formatted patterns will be written.
 """
 

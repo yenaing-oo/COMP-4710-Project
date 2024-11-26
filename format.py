@@ -8,6 +8,11 @@ and transactions to two separate text files. The output files are saved to
 
 Usage:
     python format.py <input_csv_file>
+
+Output:
+    `./output/keys.txt' - A mapping of domain item IDs to their names
+    './output/formatted_data.txt' - The transactions, with the item names replaced with their item
+    IDs
 """
 
 import pandas as pd
