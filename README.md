@@ -2,7 +2,8 @@
 This repository contains the source code for the data preprocessing and analysis steps conducted for a research paper as part of COMP 4710: Data Mining.
 
 # Dataset
-The original dataset used by the scripts is the 311 Service Request data up until October 2, 2024, stored as a CSV file. This file can be accessed [here](https://drive.google.com/file/d/1eacVh37akPoYrC0frFga439dOGj7VbX3/view?usp=drive_link).
+The original dataset used by the scripts is the 311 Service Request data up until October 2, 2024, stored as a CSV file. This file can be accessed [here](https://drive.google.com/file/d/1eacVh37akPoYrC0frFga439dOGj7VbX3/view?usp=drive_link). This dataset was downloaded from 
+[Winnipeg's 311 Requests website](https://data.winnipeg.ca/Contact-Centre-311/311-Requests/u7f6-5326/data_preview), which includes more recent data.
 
 # Requirements
 - To execute Step 3 of Finding Frequent Patterns, the SPMF library is required (https://www.philippe-fournier-viger.com/spmf/index.php?link=download.php). Download the "Release Version" of SPMF as `spmf.jar` and ensure a compatible version of Java is installed.
