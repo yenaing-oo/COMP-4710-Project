@@ -7,7 +7,7 @@ The original dataset used by the scripts is the 311 Service Request data up unti
 # Requirements
 - To execute Step 3 of Finding Frequent Patterns, the SPMF library is required (https://www.philippe-fournier-viger.com/spmf/index.php?link=download.php). Download the "Release Version" of SPMF as `spmf.jar` and ensure a compatible version of Java is installed.
 
-- To execute Step 1 of Scraping Neighbourhood Populations, the BeautifulSoup library is required.
+- To execute Step 1 of Scraping Neighbourhood Populations, the `requests` and `BeautifulSoup` libraries are required.
    To install BeautifulSoup, run:
    ```
    pip install requests beautifulsoup4
