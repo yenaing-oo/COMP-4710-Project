@@ -7,6 +7,12 @@ The original dataset used by the scripts is the 311 Service Request data up unti
 # Requirements
 To execute Step 3 of Finding Frequent Patterns, the SPMF library is required (https://www.philippe-fournier-viger.com/spmf/index.php?link=download.php). Download the "Release Version" of SPMF as `spmf.jar` and ensure a compatible version of Java is installed.
 
+To execute Step 1 of Scraping Neighbourhood Populations, the BeautifulSoup library is required.
+To install BeautifulSoup, run:
+```
+pip install requests beautifulsoup4
+```
+
 # Finding Frequent Patterns
 The following steps outline the process to extract frequent patterns within the dataset. Each script file includes comments at the top detailing its purpose and command line arguments.
 
@@ -33,7 +39,7 @@ The following steps outline the process to extract frequent patterns within the 
 # Scraping Winnipeg Neighbourhood Population Figures
 The following steps outline how the population data for Winnipeg's neighbourhoods were gathered. Each script file includes comments at the top detailing its purpose and command line arguments.
 
-1. **Scrape Winnipeg's 2021 Census website:**
+1. **Scrape Neighbourhood Populations:**
 Running this script will download all the Excel files containing census data for each neighbourhood in Winnipeg.
     ```
     python scrape_census.py
