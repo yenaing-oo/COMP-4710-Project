@@ -1,3 +1,13 @@
+"""
+This script looks for all Excel files within a directory recursively and extracts the population
+value from each Excel file that contains census data for a Winnipeg neighbourhood.
+
+The neighbourhood populations are outputted as a CSV file 'winnipeg_neighbourhood_populations.xlsx'.
+
+Usage:
+    python parse_population.py <directory_containting_excel_files>
+"""
+
 import sys
 import pandas as pd
 from pathlib import Path

@@ -1,3 +1,19 @@
+"""
+This script downloads Excel files that contain census data for neighbourhood in Winnipeg from the
+Winnipeg Census 2021 website.
+
+The downloaded files are placed in a new directory named `winnipeg_census_2021`.
+
+Requirements:
+
+This script uses the BeautifulSoup library. Run the following command to install it"
+    pip install requests beautifulsoup4
+
+Usage:
+    python scrape_census.py
+
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import re

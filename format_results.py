@@ -1,3 +1,21 @@
+"""
+This script formats the frequent patterns extracted by the SPMF library's FP-Growth algorithm
+(https://www.philippe-fournier-viger.com/spmf/FPGrowth.php) into a human-readable format, as a CSV
+file.
+
+It reads the frequent patterns from a text file, maps each item in the patterns to its
+corresponding name using a keys file, sorts the patterns based on their length and support, and
+writes the formatted patterns to a CSV file.
+
+Usage:
+    python format_results.py <keys.txt> <frequent_patterns.txt> <output.csv>
+
+Where:
+    <keys.txt> is the file containing the mapping of item numbers to their names.
+    <frequent_patterns.txt> is the file containing the frequent patterns extracted from the dataset.
+    <output.csv> is the file where the formatted patterns will be written.
+"""
+
 import sys
 import csv
 

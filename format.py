@@ -1,5 +1,18 @@
+"""
+This script formats the cleaned dataset from a CSV file into a specific text format compatible with
+SPMF library's implementation of the FP-Growth algorithm
+(https://www.philippe-fournier-viger.com/spmf/FPGrowth.php). It reads a CSV file, extracts unique
+items from each column, maps each unique item to a unique integer ID, and writes the item mappings
+and transactions to two separate text files. The output files are saved to
+'./output/formatted_data.txt' and './output/keys.txt'.
+
+Usage:
+    python format.py <input_csv_file>
+"""
+
 import pandas as pd
 import sys
+
 
 def main():
     args = sys.argv[1:]
@@ -27,13 +40,14 @@ def main():
         for item, idx in item_mapping.items():
             line = f"@ITEM={idx}={item}\n"
             f2.write(line)
-        
+
         # Write transactions
         for _, row in data.iterrows():
             transaction = sorted(item_mapping[value] for value in row)
             f1.write(" ".join(map(str, transaction)) + "\n")
 
     print(f"Formatted data saved to {output_file}")
+
 
 if __name__ == "__main__":
     main()
