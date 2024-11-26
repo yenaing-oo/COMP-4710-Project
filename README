@@ -29,3 +29,18 @@ The following steps outline the process to extract frequent patterns within the 
    ```
    python format_results.py <keys.txt> <results.txt> <output.csv>
    ```
+
+# Scraping Winnipeg Neighbourhood Population Figures
+The following steps outline how the population data for Winnipeg's neighbourhoods were gathered. Each script file includes comments at the top detailing its purpose and command line arguments.
+
+1. **Scrape Winnipeg's 2021 Census website:**
+Running this script will download all the Excel files containing census data for each neighbourhood in Winnipeg.
+    ```
+    python scrape_census.py
+    ```
+2. **Parse Populations**:
+This step extracts the population figure from each Excel file and produces a CSV with all the 
+neighbourhood populations at the end.
+    ```
+    python parse_population.py <directory_containing_excel_files>
+    ```
