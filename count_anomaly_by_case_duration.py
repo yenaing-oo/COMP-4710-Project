@@ -28,7 +28,7 @@ def main(dataset_csv):
     df = df.set_index("Case ID")
 
     print("Grouping by request type...")
-    # Group by 'Type' and calculate case durations for each type
+    # Group by 'Type'
     grouped = df.groupby("Type")
     anomaly_data_list = []
     
@@ -57,7 +57,6 @@ def main(dataset_csv):
             # Count the number of anomalies
             anomaly_count = residuals[
                 (residuals > residual_mean + 3 * residual_std)
-                | (residuals < residual_mean - 3 * residual_std)
             ].count()
 
             # Append the results to the list
@@ -65,6 +64,7 @@ def main(dataset_csv):
                 {
                     "Request Type": request_type,
                     "Count of anomalous case duration": anomaly_count,
+                    "Total Requests": len(group),
                 }
             )
 
