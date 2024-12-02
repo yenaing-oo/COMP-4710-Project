@@ -65,6 +65,7 @@ def main(dataset_csv):
                     "Request Type": request_type,
                     "Count of anomalous case duration": anomaly_count,
                     "Total Requests": len(group),
+                    "Anomaly Rate": anomaly_count/len(group)
                 }
             )
 
