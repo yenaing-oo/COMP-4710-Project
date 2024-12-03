@@ -68,3 +68,29 @@ plt.tight_layout()
 plt.savefig("./output/decomposition.png")  # Save the plot
 plt.close()  # Close the plot to free memory
 
+residuals = decomposition.resid.dropna()  # Ensure to drop NaN values
+mean = durations.mean()
+residual_std = residuals.std()
+
+# Count the number of anomalies
+anomaly_count = residuals[
+    (residuals > mean + 3 * residual_std)
+].count()
+
+# Identify anomalous points using the index of the residuals
+anomaly_indices = residuals.index[residuals > mean + 3 * residual_std]
+anomalies = df.loc[anomaly_indices, 'Open Date']
+anomaly_values = durations[anomaly_indices]
+
+# Plotting the original time series with anomalies in a separate plot
+plt.figure(figsize=(10, 8))
+plt.plot(df['Open Date'], durations, label='Original')  # Use 'Open Date' as x-axis
+plt.scatter(anomalies, anomaly_values, color='red', label='Anomalies', marker='o')  # Anomalies in red
+plt.title('Original Case Durations with Anomalies')
+plt.xlabel('Date')  # Updated label
+plt.ylabel('Duration (hours)')
+plt.legend(loc='upper left')
+
+plt.tight_layout()
+plt.savefig("./output/original_with_anomalies.png")  # Save the plot
+plt.close()  # Close the plot to free memory
