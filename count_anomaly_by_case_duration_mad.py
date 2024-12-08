@@ -40,7 +40,7 @@ def main(dataset_csv):
         print(f"Processing group {current_group} of {total_groups}...") 
         
         group = group.set_index("Open Date")
-        daily_total_case_durations = group.groupby("Open Date")["Case Duration (hours)"].sum()
+        daily_total_case_durations = group.groupby(group.index.date)["Case Duration (hours)"].sum()
 
         # Fill missing days with 0 case durations
         daily_total_case_durations = daily_total_case_durations.reindex(
@@ -77,7 +77,7 @@ def main(dataset_csv):
                 "Request type": request_type,
                 "Number of days with anomalous daily total case duration": anomaly_count,
                 "Total requests": len(group),
-                "Number of days in period": len(daily_total_case_durations),
+                "Total number of days": len(daily_total_case_durations),
                 "Anomaly Rate": anomaly_count / len(daily_total_case_durations)
             }
         )

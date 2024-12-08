@@ -3,94 +3,63 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 # Input Data
-chunk_size = 50000  # Adjust chunk size based on available memory
-chunks = pd.read_csv('../311_Requests_20241002.csv', chunksize=chunk_size)
-data_chunks = []
-for chunk in chunks:
-    data_chunks.append(chunk)
-df = pd.concat(data_chunks, ignore_index=True)
+df = pd.read_csv('../311_Requests_20241002.csv')
 
 # Convert dates and calculate case duration
 df = df[df["Subject"] == "Service Request"]
-df = df[df["Type"] == "Water Clean Up After Repairs"]
+df = df[df["Type"] == "Turn Off Water - Repairs Emergency"]
 df = df.dropna(subset=['Open Date', 'Closed Date'])
 df['Open Date'] = pd.to_datetime(df['Open Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
 df['Closed Date'] = pd.to_datetime(df['Closed Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
-df.set_index('Case ID', inplace=True)
 df.sort_values(by='Open Date', inplace=True)
 df['Case Duration (hours)'] = (df['Closed Date'] - df['Open Date']).dt.total_seconds() / 3600
-df = df[df['Case Duration (hours)'] >= 0]
+df = df[df['Case Duration (hours)'] > 0]
 
-# Drop NaN values from durations
-durations = df['Case Duration (hours)'].dropna()
+df.set_index('Open Date', inplace=True)
+daily_total_case_durations = df.groupby(df.index.date)["Case Duration (hours)"].sum()
+# Fill missing days with 0 case durations
+daily_total_case_durations = daily_total_case_durations.reindex(
+    pd.date_range(
+        start=daily_total_case_durations.index.min(),
+        end=daily_total_case_durations.index.max(),
+        freq="D",
+    ),
+    fill_value=0,
+)
 
 decomposition = sm.tsa.seasonal_decompose(
-            df['Case Duration (hours)'], model='additive', period=365
+            daily_total_case_durations, model='additive', period=365
         )
-# decomposition.plot()
-# plt.show()
+fig = decomposition.plot()
+plt.show()
 
-plt.figure(figsize=(10, 8))
-            
-# Original
-plt.subplot(411)
-plt.plot(df['Open Date'], durations, label='Original')  # Use 'Open Date' as x-axis
-plt.title('Original Case Durations')
-plt.xlabel('Date')  # Updated label
-plt.ylabel('Duration (hours)')
-plt.legend(loc='upper left')
+residuals = decomposition.resid.dropna()
 
-# Trend
-plt.subplot(412)
-plt.plot(df['Open Date'], decomposition.trend, label='Trend')  # Use 'Open Date' as x-axis
-plt.title('Trend Component')
-plt.xlabel('Date')  # Updated label
-plt.ylabel('Duration (hours)')
-plt.legend(loc='upper left')
+if not residuals.empty:
+    # Calculate the median and MAD of the residuals
+    median = residuals.median()
+    mad = (residuals - median).abs().median()
 
-# Seasonal
-plt.subplot(413)
-plt.plot(df['Open Date'], decomposition.seasonal, label='Seasonal')  # Use 'Open Date' as x-axis
-plt.title('Seasonal Component')
-plt.xlabel('Date')  # Updated label
-plt.ylabel('Duration (hours)')
-plt.legend(loc='upper left')
+    # Identify anomalous points using the index of the residuals
+    anomaly_indices = residuals.index[residuals - median > 3 * mad]
+    anomalies = daily_total_case_durations.loc[anomaly_indices]
+    # Calculate the threshold above which a day is considered an anomaly
+    threshold = median + 3 * mad
 
-# Residual
-plt.subplot(414)
-plt.plot(df['Open Date'], decomposition.resid, label='Residual')  # Use 'Open Date' as x-axis
-plt.title('Residual Component')
-plt.xlabel('Date')  # Updated label
-plt.ylabel('Duration (hours)')
-plt.legend(loc='upper left')
+    # Plot daily total case durations
+    plt.figure(figsize=(15, 6))
+    plt.bar(daily_total_case_durations.index, daily_total_case_durations, color='blue', label='Daily Total Case Durations for "Turn Off Water - Repairs Emergency" Service Requests')
+    plt.bar(anomalies.index, anomalies, color='red', label='Anomalies')
 
-plt.tight_layout()
-plt.savefig("./output/decomposition.png")  # Save the plot
-plt.close()  # Close the plot to free memory
+    # Add a horizontal line for the anomaly threshold
+    plt.axhline(y=threshold, color='green', linestyle='--', label=f'Anomaly Threshold ({threshold:.2f})')
 
-residuals = decomposition.resid.dropna()  # Ensure to drop NaN values
-mean = durations.mean()
-residual_std = residuals.std()
+    # Add labels and legend
+    plt.title('Daily Total Case Durations with Anomalies')
+    plt.xlabel('Date')
+    plt.ylabel('Case Duration (hours)')
+    plt.legend()
 
-# Count the number of anomalies
-anomaly_count = residuals[
-    (residuals > mean + 3 * residual_std)
-].count()
+    plt.ylim(0, 100000)
 
-# Identify anomalous points using the index of the residuals
-anomaly_indices = residuals.index[residuals > mean + 3 * residual_std]
-anomalies = df.loc[anomaly_indices, 'Open Date']
-anomaly_values = durations[anomaly_indices]
-
-# Plotting the original time series with anomalies in a separate plot
-plt.figure(figsize=(10, 8))
-plt.plot(df['Open Date'], durations, label='Original')  # Use 'Open Date' as x-axis
-plt.scatter(anomalies, anomaly_values, color='red', label='Anomalies', marker='o')  # Anomalies in red
-plt.title('Original Case Durations with Anomalies')
-plt.xlabel('Date')  # Updated label
-plt.ylabel('Duration (hours)')
-plt.legend(loc='upper left')
-
-plt.tight_layout()
-plt.savefig("./output/original_with_anomalies.png")  # Save the plot
-plt.close()  # Close the plot to free memory
+    plt.show()
