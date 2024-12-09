@@ -34,7 +34,7 @@ def main(csv_filename):
         HeatMap(heat_data, radius=60, blur=55).add_to(base_map)
 
         # Save or display the map
-        base_map.save("heatmap.html")
+        base_map.save("./output/heatmap.html")
 
     else:
         print("No data available for the specified filters.")
@@ -43,7 +43,7 @@ def main(csv_filename):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print(
-            "Usage: python visualize_service_requests_by_geolocation.py <csv_filename>"
+            "Usage: python create_request_heat_map.py <csv_filename>"
         )
     else:
         main(sys.argv[1])

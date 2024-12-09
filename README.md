@@ -14,6 +14,16 @@ The original dataset used by the scripts is the 311 Service Request data up unti
    pip install requests beautifulsoup4
    ```
 
+- "Create Service Request Heatmap" requires installation of the `folium` package:
+   ```
+   pip install folium
+   ```
+
+- "Detect Anomalies" and "Visualize Anomaly Detection" require installation of the following package:
+```
+   pip install statsmodels matplotlib
+```
+
 # Finding Frequent Patterns
 The following steps outline the process to extract frequent patterns within the dataset. Each script file includes comments at the top detailing its purpose and command line arguments.
 
@@ -51,3 +61,34 @@ neighbourhood populations at the end.
     ```
     python parse_population.py <directory_containing_excel_files>
     ```
+
+# Create Service Request Heatmap
+To visualize the distribution of service requests across the city on a heatmap, run the following command:
+   ```
+   python create_request_heat_map.py <311_request_dataset.csv>
+   ```
+
+This produces an HTML file called `heatmap.html` int he `output` directory which displays an interactive
+heatmap when opened on a browser.
+
+# Visualize Anomaly Detection
+This script creates plots for two stages of detecting anomalous days with abnormally long service request durations of the service request type "Turn Off Water - Repairs Emergency". This script demonstrates how anomaly detection is
+being carried out for every single request type in the script `count_anomaly_by_case_duration_mad.py`.
+
+The first plot shows the decomposition of the daily total case duration time series
+data into its components - seasonal, trend and residual.
+
+The second plot displays original daily total case duration time series with anomalous days identified.
+
+Run this script by:
+   ```
+   python visualize_anomaly_detection <311_request_dataset.csv>
+   ```
+
+# Detect Anomalies
+This script analyzes the 311 dataset to produce a CSV file (`output/anomaly_count.csv`) containing the number of days with abnormally long case durations for each request type, as well as other relevant information.
+
+Run it using:
+```
+python count_anomaly_by_case_duration_mad.py <311_request_dataset.csv>
+```
